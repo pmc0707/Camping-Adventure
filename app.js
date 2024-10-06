@@ -4,6 +4,9 @@ const mongoose = require("mongoose");
 const Listing = require("../MiniProject/models/listing.js")
 const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 const path = require("path")
+const methodOverride = require("method-override")
+
+
 main().then(()=>{
     console.log("db is connected")
 }).catch((err)=>{
@@ -15,6 +18,7 @@ async  function main() {
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"))
 app.use(express.urlencoded({extended: true}))
+app.use(methodOverride("_method"))
 app.get("/", (req, res) => {
     res.send("Hi, I am root");
   });
@@ -53,6 +57,20 @@ app.get("/", (req, res) => {
   await newListing.save();
   res.redirect("/listings");
   })
+//edit route
+app.get("/listings/:id/edit",async(req,res)=>{
+  let { id } = req.params;
+  const listing = await Listing.findById(id);
+  res.render("listings/edit.ejs",{listing})
+})
+
+//update route
+app.put("/listings/:id", async (req, res) => {
+  const { id } = req.params;
+  const updatedListing = await Listing.findByIdAndUpdate(id, req.body.listing, { new: true });
+  res.redirect(`/listings/${updatedListing._id}`);
+});
+
 
   app.listen(8080, () => {
     console.log("server is listening to port 8080");

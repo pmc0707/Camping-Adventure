@@ -7,18 +7,14 @@ const listingSchema = new Schema({
     required: true,
   },
   description: String,
-  image:{
-        filename:{
-            type:String,
-            required:true,
+ image: {
+        url: {
+            type: String,
+            required: true // Ensure this is required if you want validation
         },
-        url:{
-            type:String,
-            required:true,
-            set:function(v){
-                return v==="https://unsplash.com/photos/a-road-surrounded-by-purple-trees-with-a-sky-in-the-background-Fp7NoYkmowk"?"":v;
-            },
-
+        filename: {
+            type: String,
+            required: true // Ensure this is required if you want validation
         }
     },
     price: Number,
