@@ -70,7 +70,23 @@ app.put("/listings/:id", async (req, res) => {
   const updatedListing = await Listing.findByIdAndUpdate(id, req.body.listing, { new: true });
   res.redirect(`/listings/${updatedListing._id}`);
 });
-
+//delete route
+// app.delete("listings/:id", async (req,res)=>{
+//   let {id} = req.params;
+//  let deleteListing=await Listing.findByIdAndDelete(id)
+//  console.log(deleteListing);
+//  res.redirect("/listings")
+// })
+app.delete("/listings/:id", async (req, res) => {
+  try {
+    let { id } = req.params;
+    let deleteListing = await Listing.findByIdAndDelete(id);
+    res.redirect("/listings");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
 
   app.listen(8080, () => {
     console.log("server is listening to port 8080");
