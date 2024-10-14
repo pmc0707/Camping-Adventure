@@ -8,3 +8,38 @@
 .nav-link{
     color: #222222 !important;
 }
+.navbar{
+    background-color: aliceblue;
+}
+.f-info-link {
+    width: 100%;
+}
+.f-info-link a{
+    text-decoration: none;
+    color: #222222;
+}
+.f-info-link a:hover{
+    text-decoration: underline;
+}
+.f-info{
+    font-size: 1rem;
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: aliceblue;
+    justify-content: center;
+    align-items: space-between;
+}
+.f-info-socials i{
+    width: 2%;
+    align-items: space-between;
+    font-size: 1.2rem;
+}
+.f-info-link,
+.f-info-socials,
+.f-info-brand{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
