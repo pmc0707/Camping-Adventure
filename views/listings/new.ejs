@@ -2,15 +2,16 @@
 <body>
     <h3>Create a new listing</h3>
     <form method="POST" action="/listings">
-        <input name="listing[title]" placeholder="title"/><br><br>
-        <textarea name="listing[description]" placeholder="enter description" type="text"></textarea><br><br>
+        <input name="listing[title]" placeholder="Title" required/><br><br>
+        <textarea name="listing[description]" placeholder="Enter description" type="text" required></textarea><br><br>
 
-        <input type="text" name="listing[image]" placeholder="image here" required>
- 
-        <input type="text" name="listing[image]" placeholder="image here" required><br><br>
-        <input name="listing[price]" placeholder="enter price" type="number"/><br><br>
-        <input name="listing[country]" placeholder="enter country"/><br><br>
-        <input name="listing[location]" placeholder="enter loaction"/><br><br>
-        <button>Add</button>
+        <!-- Provide both filename and URL fields for the image -->
+        <input type="text" name="listing[image][filename]" placeholder="Image Filename" required/><br><br>
+        <input type="text" name="listing[image][url]" placeholder="Image URL" required/><br><br>
+
+        <input name="listing[price]" placeholder="Enter price" type="number" required/><br><br>
+        <input name="listing[country]" placeholder="Enter country"/><br><br>
+        <input name="listing[location]" placeholder="Enter location"/><br><br>
+        <button type="submit">Add</button>
     </form>
 </body>

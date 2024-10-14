@@ -1,27 +1,34 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+// const mongoose = require('mongoose');
 
-const listingSchema = new Schema({
-  title: {
-    type: String,
-    required: true,
-  },
-  description: String,
- image: {
-        url: {
-            type: String,
-            required: true // Ensure this is required if you want validation
-        },
+const listingSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: true
+    },
+    description: {
+        type: String,
+        required: true
+    },
+    image: {
         filename: {
             type: String,
-            required: true // Ensure this is required if you want validation
+            required: true
+        },
+        url: {
+            type: String,
+            required: true
         }
     },
-    price: Number,
-  location: String,
-  country: String,
-
+    price: {
+        type: Number,
+        required: true
+    },
+    country: String,
+    location: String
 });
+
+module.exports = mongoose.model('Listing', listingSchema);
 
 const Listing = mongoose.model("Listing", listingSchema);
 module.exports = Listing;
