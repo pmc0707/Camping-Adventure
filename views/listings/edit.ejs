@@ -4,35 +4,41 @@
         <br>
     <h3>Edit Your cotent</h3>
     
-    <form method="POST" action="/listings/<%= listing._id %>?_method=PUT">
+    <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" novalidate class="needs-validation">
         <div class="mb-3">
             <label for="Title" class="form-lable">Title</label>
-            <input class="form-control" name="listing[title]" value="<%=listing.title%>" type="text"/>
+            <input class="form-control" name="listing[title]" value="<%=listing.title%>" type="text" required/>
+            <div class="invalid-feedback">Enter Title!</div>
         </div>
         <div class="mb-3">
-            <label for="description" class="form-lable">Description</label>
+            <label for="description" class="form-lable" novalidate class="needs-validation">Description</label>
         <textarea name="listing[description]" class="form-control"><%=listing.description%></textarea>
         </div>
         <div class="mb-3">
-            <label for="Image" class="form-lable">Image</label>
+            <label for="Image" class="form-control" novalidate class="needs-validation">Image</label>
         <input class="form-control" type="text" name="listing[image]" value="<%=listing.image%>" placeholder="image here" required>
+        <div class="invalid-feedback">Please Provide Valid Image!</div>
         </div>
         <div class="row">
         <div class="mb-3 col-md-4">
-            <label for="price" class="form-lable">Price</label>
-        <input name="listing[price]" value="<%=listing.price%>" type="number" class="form-control" /><br>
+            <label for="price" class="form-lable" novalidate class="needs-validation">Price</label>
+        <input name="listing[price]" value="<%=listing.price%>" type="number" class="form-control" required /><br>
+        <div class="invalid-feedback">Please Provide Valid Price!</div>
         </div>
         <div class="mb-3 col-md-8">
-            <label for="country" class="form-lable">Country</label>
-        <input name="listing[country]" value="<%=listing.country%>" class="form-control"/><br>
+            <label for="country" class="form-lable" novalidate class="needs-validation">Country</label>
+        <input name="listing[country]" value="<%=listing.country%>" class="form-control" required/><br>
+        <div class="invalid-feedback">Please Provide Valid Country Name!</div>
         </div>
     </div>
         <div class="mb-3">
-            <label for="location" class="form-lable">Location</label>
-        <input name="listing[location]" value="<%=listing.location%>" class="form-control"/><br>
+            <label for="location" class="form-lable" novalidate class="needs-validation">Location</label>
+        <input name="listing[location]" value="<%=listing.location%>" type="text" class="form-control" required/><br>
+        <div class="invalid-feedback">Please Provide Valid Location</div>
         </div>
         <button class="btn btn-dark edit-btn">EDIT</button>
     </form>
     <br>
 </div>
 </div>
+<script src="/js/script.js"></script>
