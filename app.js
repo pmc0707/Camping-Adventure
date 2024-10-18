@@ -6,7 +6,8 @@ const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 const path = require("path")
 const methodOverride = require("method-override")
 const ejsMate = require("ejs-mate");
-
+const { wrapAsync } = require('./utils/WrapAsync.js');
+const ExpressError = require('./utils/ExpressError.js')
 
 main().then(()=>{
     console.log("db is connected")
@@ -56,44 +57,46 @@ app.get("/", (req, res) => {
       }
   });
   //create route
-  app.post("/listings",async (req,res,next)=>{
-    try{
+  app.post("/listings",wrapAsync(async (req,res,next)=>{
+    if(!req.body.listing){
+      throw new ExpressError(400,"Send valid data for listing")
+    }
       const newListing = new Listing(req.body.listing);
       await newListing.save();
       res.redirect("/listings");
-    } catch(err) {
-      next(err);
-    }
-  
   })
+)
 //edit route
-app.get("/listings/:id/edit",async(req,res)=>{
+app.get("/listings/:id/edit",wrapAsync(async(req,res)=>{
   let { id } = req.params;
   const listing = await Listing.findById(id);
   res.render("listings/edit.ejs",{listing})
 })
-
+);
 //update route
-app.put("/listings/:id", async (req, res) => {
-  const { id } = req.params;
-  const updatedListing = await Listing.findByIdAndUpdate(id, req.body.listing, { new: true });
+app.put("/listings/:id", wrapAsync(async (req, res) => {
+  if(!req.body.listing){
+    throw new ExpressError(400,"Send valid data for listing")
+  }
+  let { id } = req.params;
+  await Listing.findByIdAndUpdate(id, {...req.body.listing});
   res.redirect(`/listings/${updatedListing._id}`);
-});
-
-app.delete("/listings/:id", async (req, res) => {
-  try {
+}));
+//delete route
+app.delete("/listings/:id", wrapAsync(async (req, res) => {
+ 
     let { id } = req.params;
     let deleteListing = await Listing.findByIdAndDelete(id);
     res.redirect("/listings");
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Internal Server Error");
-  }
-});
+}));
 
-app.use((err,req,res,next)=>{
-  res.send("something went wrong!");
-})
+app.all("*", (req, res, next) => {
+  next(new ExpressError(404, "Page Not Found!"));
+});
+app.use((err, req, res, next) => {
+  const { statusCode = 500, message = "Something went wrong!" } = err;
+  res.status(statusCode).send(message);
+});
 
   app.listen(8080, () => {
     console.log("server is listening to port 8080");
