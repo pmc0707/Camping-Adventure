@@ -83,7 +83,7 @@ app.put("/listings/:id", wrapAsync(async (req, res) => {
   res.redirect(`/listings/${updatedListing._id}`);
 }));
 //delete route
-app.delete("/listings/:id", wrapAsync(async (req, res) => {
+app.delete("/listings/:id", wrapAsync(async (req, res,next) => {
  
     let { id } = req.params;
     let deleteListing = await Listing.findByIdAndDelete(id);
@@ -93,11 +93,17 @@ app.delete("/listings/:id", wrapAsync(async (req, res) => {
 app.all("*", (req, res, next) => {
   next(new ExpressError(404, "Page Not Found!"));
 });
+// app.use((err, req, res, next) => {
+//   const { statusCode = 500, message = "Something went wrong!" } = err;
+//   res.status(statusCode).send(message);
+//   res.render("error.ejs",{err})
+// });
 app.use((err, req, res, next) => {
   const { statusCode = 500, message = "Something went wrong!" } = err;
-  res.status(statusCode).send(message);
-  res.render("error.ejs",{err})
+  res.status(statusCode).send(message);  // <-- This sends a response
+  res.render("error.ejs",{err});         // <-- Another response is attempted here
 });
+
 
   app.listen(8080, () => {
     console.log("server is listening to port 8080");
