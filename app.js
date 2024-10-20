@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const Listing = require("../MiniProject/models/listing.js")
+const Listing = require("./models/listing.js")
 const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 const path = require("path")
 const methodOverride = require("method-override")
@@ -60,7 +60,6 @@ app.get("/", (req, res) => {
       }  
       try {
           const listing = await Listing.findById(id);
-  
           if (!listing) {
               return res.status(404).send("Listing not found.");
           }  
@@ -71,10 +70,9 @@ app.get("/", (req, res) => {
       }
   });
   //create route
-  app.post("/listings",validateListing,wrapAsync(async (req,res,next)=>{
-     
+  app.post("/listings",validateListing,wrapAsync(async (req,res,next)=>{     
       const newListing = new Listing(req.body.listing);
-   
+      newListing.image.url = req.body.listing.image;
       await newListing.save();
       res.redirect("/listings");
   })
@@ -95,7 +93,7 @@ app.put("/listings/:id",
   res.redirect(`/listings/${updatedListing._id}`);
 }));
 //delete route
-app.delete("/listings/:id", wrapAsync(async (req, res,next) => {
+app.delete("/listings/:id", wrapAsync(async (req, res, next) => {
  
     let { id } = req.params;
     let deleteListing = await Listing.findByIdAndDelete(id);
@@ -115,4 +113,4 @@ app.use((err, req, res, next) => {
 
   app.listen(8080, () => {
     console.log("server is listening to port 8080");
-  });  
+  });
