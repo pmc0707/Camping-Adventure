@@ -38,6 +38,7 @@ This project is built using the following technologies:
 Make sure you have the following installed:
 - [Node.js](https://nodejs.org/en/) (v12 or higher)
 - [MongoDB](https://www.mongodb.com/) (locally or via a cloud service like MongoDB Atlas)
+- [joi](https://joi.dev/api/?v=17.13.3) (joi lets you describe your data using a simple, intuitive, and readable language.)
 
 ### Steps
 1. **Clone the Repository**:

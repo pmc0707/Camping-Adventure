@@ -1,7 +1,8 @@
-<% layout("/layouts/boilerplate") %>
+<%- layout('/layouts/boilerplate') %>
+
 <div class="row mt-3">
     <div class="alert alert-danger col-8 offset-2" role="alert">
         <h4 class="alert-heading"><%= err.message %></h4>
-        <p><%= err.stack || "No additional details available." %></p>
+        <p><%= err.stack ? err.stack : "No additional details available." %></p>
     </div>
 </div>

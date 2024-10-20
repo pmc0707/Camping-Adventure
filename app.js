@@ -8,7 +8,7 @@ const methodOverride = require("method-override")
 const ejsMate = require("ejs-mate");
 const { wrapAsync } = require('./utils/WrapAsync.js');
 const ExpressError = require('./utils/ExpressError.js')
-
+const {listingSchema} = require("./schema.js")
 main().then(()=>{
     console.log("db is connected")
 }).catch((err)=>{
@@ -27,6 +27,20 @@ app.use(express.static(path.join(__dirname,"/public")));
 app.get("/", (req, res) => {
     res.send("Hi, I am root");
   });
+  
+
+  const validateListing = (req, res, next) => {
+    let { error } = listingSchema.validate(req.body);
+    if (error) {
+      console.log("Validation error:", error);
+      let errMsg = error.details.map((el) => el.message).join(",");
+      throw new ExpressError(404, errMsg);
+    } else {
+      next();
+    }
+  };
+  
+
 //index route
   app.get("/listings", async(req,res) =>{
     const allListing =await Listing.find({});
@@ -57,15 +71,14 @@ app.get("/", (req, res) => {
       }
   });
   //create route
-  app.post("/listings",wrapAsync(async (req,res,next)=>{
-    if(!req.body.listing){
-      throw new ExpressError(400,"Send valid data for listing")
-    }
+  app.post("/listings",validateListing,wrapAsync(async (req,res,next)=>{
+     
       const newListing = new Listing(req.body.listing);
+   
       await newListing.save();
       res.redirect("/listings");
   })
-)
+);
 //edit route
 app.get("/listings/:id/edit",wrapAsync(async(req,res)=>{
   let { id } = req.params;
@@ -74,10 +87,9 @@ app.get("/listings/:id/edit",wrapAsync(async(req,res)=>{
 })
 );
 //update route
-app.put("/listings/:id", wrapAsync(async (req, res) => {
-  if(!req.body.listing){
-    throw new ExpressError(400,"Send valid data for listing")
-  }
+app.put("/listings/:id",
+   validateListing,
+   wrapAsync(async (req, res) => {
   let { id } = req.params;
   await Listing.findByIdAndUpdate(id, {...req.body.listing});
   res.redirect(`/listings/${updatedListing._id}`);
@@ -93,16 +105,12 @@ app.delete("/listings/:id", wrapAsync(async (req, res,next) => {
 app.all("*", (req, res, next) => {
   next(new ExpressError(404, "Page Not Found!"));
 });
-// app.use((err, req, res, next) => {
-//   const { statusCode = 500, message = "Something went wrong!" } = err;
-//   res.status(statusCode).send(message);
-//   res.render("error.ejs",{err})
-// });
 app.use((err, req, res, next) => {
-  const { statusCode = 500, message = "Something went wrong!" } = err;
-  res.status(statusCode).send(message);  // <-- This sends a response
-  res.render("error.ejs",{err});         // <-- Another response is attempted here
+  let { statusCode = 500, message = "Something went wrong!" } = err;
+  res.status(statusCode).render("error.ejs", { err: { message, stack: err.stack || null } });
 });
+
+
 
 
   app.listen(8080, () => {
