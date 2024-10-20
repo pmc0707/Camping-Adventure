@@ -43,5 +43,5 @@ Make sure you have the following installed:
 ### Steps
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/yourusername/wanderlust.git
+   git clone https://github.com/pmc0707/Camping-Adventure.git
    cd wanderlust
