@@ -29,12 +29,12 @@
       <hr>
       <h4 class="col-8">
         Leave A Review</h4>
-        <form>
-          <div>
+        <form class="mb-3" action="/listings/<%= listing.id%>/reviews" method="POST">
+          <div class="mb-3 mt-3">
             <label for="rating" class="form-lable"> Rating</label>
-            <input type="range" min="1" max="5" id="rating" name="review[rating]" />
+            <input type="range" min="1" max="5" id="rating" name="review[rating]" class="form-range" />
           </div>
-          <div>
+          <div class="mb-3 mt-3">
             <label for="comment" class="form-lable"> Comments</label>
             <textarea
             name="review[comment]"
