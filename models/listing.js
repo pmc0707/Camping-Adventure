@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const review = require("./review");
+const review = require("./review"); // Assuming this is the Review model
 const Schema = mongoose.Schema;
 
 const listingSchema = new mongoose.Schema({
@@ -28,6 +28,9 @@ const listingSchema = new mongoose.Schema({
         }
     ]
 });
+
+// module.exports = mongoose.model("Listing", listingSchema);
+
 
 module.exports = mongoose.model('Listing', listingSchema);
 

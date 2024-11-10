@@ -8,7 +8,7 @@ const methodOverride = require("method-override")
 const ejsMate = require("ejs-mate");
 const { wrapAsync } = require('./utils/WrapAsync.js');
 const ExpressError = require('./utils/ExpressError.js')
-const {listingSchema} = require("./schema.js")
+const {listingSchema, reviewSchema} = require("./schema.js")
 const Review = require("./models/review.js")
 main().then(()=>{
     console.log("db is connected")
@@ -29,11 +29,20 @@ app.get("/", (req, res) => {
     res.send("Hi, I am root");
   });
   
+  const validateReview = (req, res, next) => {
+    let { error } = reviewSchema.validate(req.body);
+    if (error) {
+      // console.log("Validation error:", error);
+      let errMsg = error.details.map((el) => el.message).join(",");
+      throw new ExpressError(404, errMsg);
+    } else {
+      next();
+    }
+  };
 
   const validateListing = (req, res, next) => {
     let { error } = listingSchema.validate(req.body);
     if (error) {
-      console.log("Validation error:", error);
       let errMsg = error.details.map((el) => el.message).join(",");
       throw new ExpressError(404, errMsg);
     } else {
@@ -41,7 +50,7 @@ app.get("/", (req, res) => {
     }
   };
   
-
+  
 //index route
   app.get("/listings", async(req,res) =>{
     const allListing =await Listing.find({});
@@ -101,17 +110,17 @@ app.delete("/listings/:id", wrapAsync(async (req, res, next) => {
     res.redirect("/listings");
 }));
 //REVIEW post route
-app.post("/listings/:id/reviews",async(req,res) => {
+app.post("/listings/:id/reviews",validateReview,wrapAsync(async(req,res) => {
   let listing =await Listing.findById(req.params.id)
   let newReview = new Review(req.body.review);
 
   listing.reviews.push(newReview);
   await newReview.save();
   await listing.save();
-
-  res.redirect(`/listings/${listing._id}`);
-})
-
+  console.log("new review saved")
+  res.send("new review saved")
+  // res.redirect(`/listings/${listing._id}`);
+}))
 
 app.all("*", (req, res, next) => {
   next(new ExpressError(404, "Page Not Found!"));
