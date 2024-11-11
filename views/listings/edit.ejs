@@ -16,7 +16,8 @@
         </div>
         <div class="mb-3">
             <label for="Image" class="form-control" novalidate class="needs-validation">Image</label>
-        <input class="form-control" type="text" name="listing[image][url]" value="<%=listing.image%>" placeholder="image here" required>
+            <input class="form-control" type="text" name="listing[image][url]" value="<%=listing.image.url%>" placeholder="image here" required>
+        <!-- <input class="form-control" type="text" name="listing[image][ur]" value="<%=listing.image%>" placeholder="image here" required> -->
         <div class="invalid-feedback">Please Provide Valid Image!</div>
         </div>
         <div class="row">
