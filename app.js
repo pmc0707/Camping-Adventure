@@ -9,6 +9,8 @@ const ExpressError = require('./utils/ExpressError.js')
 const listings = require("./routes/listing.js");
 const reviews = require("./routes/review.js");
 const session = require("express-session");
+const flash = require("connect-flash");
+
 
 main().then(() => {
   console.log("db is connected") 
@@ -37,7 +39,7 @@ const sessionOptions = {
   },
 };
 app.use(session(sessionOptions));
-
+app.use(flash())
 
 app.get("/", (req, res) => {
   res.send("Hi, I am root");
