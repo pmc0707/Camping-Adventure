@@ -36,7 +36,8 @@ router.get("/:id", wrapAsync(async (req, res) => {
     try {
         const listing = await Listing.findById(id).populate("reviews");
         if (!listing) {
-            return res.status(404).send("Listing not found.");
+            req.flash("error","Listing you are requested for doesn't exist!");
+            res.redirect("/listings")
         }
         res.render("listings/show.ejs", { listing });
     } catch (err) {
@@ -50,7 +51,7 @@ router.post("/", validateListing, wrapAsync(async (req, res, next) => {
     // newListing.image.url = req.body.listing.image;
     newListing.image.url = req.body.listing.image.url;
     await newListing.save();
-    req.flash("success","New Listing Created!")
+    req.flash("success","New Listing Created!");
     res.redirect("/listings");
 })
 );
