@@ -27,6 +27,25 @@ router.get("/new", (req, res) => {
 })
 //show route
 
+// router.get("/:id", wrapAsync(async (req, res) => {
+//     let { id } = req.params;
+//     id = id.trim();
+//     if (!mongoose.isValidObjectId(id)) {
+//         return res.status(400).send("Invalid listing ID.");
+//     }
+//     try {
+//         const listing = await Listing.findById(id).populate("reviews");
+//         if (!listing) {
+//             req.flash("error","Listing you are requested for doesn't exist!");
+//             res.redirect("/listings")
+//         }
+//         res.render("listings/show.ejs", { listing });
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).send("Server error while fetching listing.");
+//     }
+// }));
+// show route
 router.get("/:id", wrapAsync(async (req, res) => {
     let { id } = req.params;
     id = id.trim();
@@ -36,8 +55,8 @@ router.get("/:id", wrapAsync(async (req, res) => {
     try {
         const listing = await Listing.findById(id).populate("reviews");
         if (!listing) {
-            req.flash("error","Listing you are requested for doesn't exist!");
-            res.redirect("/listings")
+            req.flash("error", "Listing you are requested for doesn't exist!");
+            return res.redirect("/listings");
         }
         res.render("listings/show.ejs", { listing });
     } catch (err) {
@@ -45,6 +64,7 @@ router.get("/:id", wrapAsync(async (req, res) => {
         res.status(500).send("Server error while fetching listing.");
     }
 }));
+
 //create route
 router.post("/", validateListing, wrapAsync(async (req, res, next) => {
     const newListing = new Listing(req.body.listing);
