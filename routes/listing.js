@@ -5,7 +5,7 @@ const { wrapAsync } = require('../utils/WrapAsync.js');
 const ExpressError = require('../utils/ExpressError.js')
 const {listingSchema, reviewSchema} = require("../schema.js")
 const Listing = require("../models/listing.js")
-
+const {isLoggedIn} = require("../middelware.js")
 
 const validateListing = (req, res, next) => {
     let { error } = listingSchema.validate(req.body);
@@ -22,29 +22,11 @@ router.get("/", wrapAsync(async (req, res) => {
     res.render("listings/index.ejs", { allListing })
 }))
 //new route
-router.get("/new", (req, res) => {
+router.get("/new", isLoggedIn,(req, res) => {
+   
     res.render("listings/new.ejs");
 })
-//show route
 
-// router.get("/:id", wrapAsync(async (req, res) => {
-//     let { id } = req.params;
-//     id = id.trim();
-//     if (!mongoose.isValidObjectId(id)) {
-//         return res.status(400).send("Invalid listing ID.");
-//     }
-//     try {
-//         const listing = await Listing.findById(id).populate("reviews");
-//         if (!listing) {
-//             req.flash("error","Listing you are requested for doesn't exist!");
-//             res.redirect("/listings")
-//         }
-//         res.render("listings/show.ejs", { listing });
-//     } catch (err) {
-//         console.error(err);
-//         res.status(500).send("Server error while fetching listing.");
-//     }
-// }));
 // show route
 router.get("/:id", wrapAsync(async (req, res) => {
     let { id } = req.params;
