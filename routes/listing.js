@@ -58,7 +58,7 @@ router.post("/", validateListing, wrapAsync(async (req, res, next) => {
 })
 );
 //edit route
-router.get("/:id/edit", wrapAsync(async (req, res) => {
+router.get("/:id/edit",isLoggedIn, wrapAsync(async (req, res) => {
     let { id } = req.params;
     const listing = await Listing.findById(id);
     res.render("listings/edit.ejs", { listing })
@@ -66,6 +66,7 @@ router.get("/:id/edit", wrapAsync(async (req, res) => {
 );
 //update route
 router.put("/:id",
+    isLoggedIn,
     validateListing,
     wrapAsync(async (req, res) => {
         let { id } = req.params;
@@ -74,7 +75,7 @@ router.put("/:id",
         res.redirect(`/listings/${id}`);
     }));
 //delete route
-router.delete("/:id", wrapAsync(async (req, res, next) => {
+router.delete("/:id",isLoggedIn, wrapAsync(async (req, res, next) => {
 
     let { id } = req.params;
     let deleteListing = await Listing.findByIdAndDelete(id);
