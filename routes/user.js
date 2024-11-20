@@ -32,5 +32,13 @@ router.post("/login",
                req.flash("success","Welcome back to Your Adventure");
                res.redirect("/listings")
 })
-
+router.get("/logout",(req,res)=>{
+    req.logout((err) => {
+        if(err) {
+            next(err);
+        }
+        req.flash("success","You have logout Successfully")
+        res.redirect("/listings")
+    })
+})
 module.exports = router;
