@@ -35,7 +35,9 @@ router.get("/:id", wrapAsync(async (req, res) => {
         return res.status(400).send("Invalid listing ID.");
     }
     try {
-        const listing = await Listing.findById(id).populate("reviews");
+        const listing = await Listing.findById(id)
+        .populate("reviews")
+        .populate("owner");
         if (!listing) {
             req.flash("error", "Listing you are requested for doesn't exist!");
             return res.redirect("/listings");
@@ -52,6 +54,7 @@ router.post("/", validateListing, wrapAsync(async (req, res, next) => {
     const newListing = new Listing(req.body.listing);
     // newListing.image.url = req.body.listing.image;
     newListing.image.url = req.body.listing.image.url;
+    newListing.owner = req.user._id;
     await newListing.save();
     req.flash("success","New Listing Created!");
     res.redirect("/listings");

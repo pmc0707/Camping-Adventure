@@ -11,6 +11,7 @@
       </div>
 
       <ul>
+        <li>Owner: <%= listing.owner.username%></li>
         <li>Description: <%= listing.description %>
         </li>
         <li>Price: &#8377;<%= listing.price.toLocaleString('en-IN') %>
