@@ -2,20 +2,10 @@ const express = require("express");
 const mongoose = require("mongoose");
 const router = express.Router();
 const { wrapAsync } = require('../utils/WrapAsync.js');
-const ExpressError = require('../utils/ExpressError.js')
-const {listingSchema, reviewSchema} = require("../schema.js")
 const Listing = require("../models/listing.js")
-const {isLoggedIn, isOwner} = require("../middelware.js")
+const {isLoggedIn, isOwner,validateListing} = require("../middelware.js")
 
-const validateListing = (req, res, next) => {
-    let { error } = listingSchema.validate(req.body);
-    if (error) {
-      let errMsg = error.details.map((el) => el.message).join(",");
-      throw new ExpressError(404, errMsg);
-    } else {
-      next();
-    }
-  };
+
 //index route
 router.get("/", wrapAsync(async (req, res) => {
     const allListing = await Listing.find({});
@@ -26,7 +16,6 @@ router.get("/new", isLoggedIn,(req, res) => {
    
     res.render("listings/new.ejs");
 })
-
 // show route
 router.get(
     "/:id",
