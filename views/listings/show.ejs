@@ -35,6 +35,7 @@
       <%}%>
       <div>
         <hr>
+        <%if(currUser) {%>
         <h4 class="col-8">
           Leave A Review</h4>
         <form action="/listings/<%= listing.id %>/reviews" method="POST" novalidate class="needs-validation">
@@ -50,6 +51,7 @@
           <button class="btn btn-outline-dark">Submit</button>
         </form>
         <hr>
+        <%}%>
         <p><b>All Reviews</b></p>
         <ul>
           <div class="row">
