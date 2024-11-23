@@ -1,3 +1,5 @@
+var env = require('env')()
+// console.log(env)
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
