@@ -4,7 +4,7 @@
         <br>
     <h3>Edit Your cotent</h3>
     
-    <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" novalidate class="needs-validation">
+    <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" novalidate class="needs-validation" enctype="multipart/form-data">
         <div class="mb-3">
             <label for="Title" class="form-lable">Title</label>
             <input class="form-control" name="listing[title]" value="<%=listing.title%>" type="text" required/>
@@ -15,10 +15,8 @@
         <textarea name="listing[description]" class="form-control"><%=listing.description%></textarea>
         </div>
         <div class="mb-3">
-            <label for="Image" class="form-control" novalidate class="needs-validation">Image</label>
-            <input class="form-control" type="text" name="listing[image][url]" value="<%=listing.image.url%>" placeholder="image here" required>
-        <!-- <input class="form-control" type="text" name="listing[image][ur]" value="<%=listing.image%>" placeholder="image here" required> -->
-        <div class="invalid-feedback">Please Provide Valid Image!</div>
+            <label for="Image" class="form-control" >Upload New Image</label>
+            <input class="form-control" type="file" name="listing[image]" >
         </div>
         <div class="row">
         <div class="mb-3 col-md-4">
