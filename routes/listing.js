@@ -6,7 +6,8 @@ const Listing = require("../models/listing.js")
 const {isLoggedIn, isOwner,validateListing} = require("../middelware.js")
 const listingController = require("../controller/listing.js");
 const multer  = require('multer')
-const upload = multer({ dest: 'uploads/' })
+const {storage} = require("../cloudConfigue.js")
+const upload = multer({ storage })
 
 //index route
 router
