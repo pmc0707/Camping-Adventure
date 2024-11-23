@@ -16,8 +16,8 @@ router
 //       validateListing,
 //       wrapAsync(listingController.createListing)
 //  );
-.post((req,res) => {
-    res.send(req.body)
+.post( upload.single('listing[image]'),(req,res) => {
+    res.send(req.file)
 })
  //new route
 router.get("/new",
