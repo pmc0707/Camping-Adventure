@@ -65,9 +65,9 @@
         </form>
         <hr>
         <%}%>
-        <p><b>All Reviews</b></p>
-        <ul>
+        <%if (listing.reviews.length > 0)  {%>
           <div class="row">
+            <p><b>All Reviews</b></p>
             <%for(review of listing.reviews){%>
               <div class="card col-5 ms-3 mb-1">
                 <div class="card-body">
@@ -86,7 +86,22 @@
               </div>
               <%}%>
           </div>
-        </ul>
+        <%}%>
       </div>
     </div>
+    <div class="col-6 offset-2 mb-3">
+      <h3>Where you'll be</h3>
+      <div id="map"></div>
+    </div>
   </div>
+  <script>
+    let mapToken = "<%= process.env.MAP_TOKEN %>";
+    console.log(mapToken)
+    mapboxgl.accessToken = mapToken;
+    const map = new mapboxgl.Map({
+      conatiner : "map",
+      style: "mapbox://styles/mapbox/streets-v12",
+      center: [-74.5,40],
+      zoom:9,
+    })
+  </script>
