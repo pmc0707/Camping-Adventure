@@ -106,3 +106,9 @@ body{
    margin-left: 2vh;
    margin-top: -2.4rem;
 }
+/*MAP*/
+#map{
+   
+    height: 500px;
+    width: 100%;
+}

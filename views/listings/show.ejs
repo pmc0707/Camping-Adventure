@@ -96,12 +96,12 @@
   </div>
   <script>
     let mapToken = "<%= process.env.MAP_TOKEN %>";
-    console.log(mapToken)
+    console.log(mapToken);
     mapboxgl.accessToken = mapToken;
     const map = new mapboxgl.Map({
-      conatiner : "map",
-      style: "mapbox://styles/mapbox/streets-v12",
-      center: [-74.5,40],
-      zoom:9,
-    })
-  </script>
+        container: "map", 
+        style: "mapbox://styles/mapbox/streets-v12",
+        center: [ 77.216721,28.644800 ],
+        zoom: 9,
+    });
+</script>
