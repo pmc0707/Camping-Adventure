@@ -1,4 +1,9 @@
+const { response } = require("express");
 const Listing = require("../models/listing");
+const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+const mapToken = process.env.MAP_TOKEN;
+const geocodingClient = mbxGeocoding({ accessToken: mapToken });
+
 module.exports.index = async (req, res) => {
     const allListing = await Listing.find({});
     res.render("listings/index.ejs", { allListing })
@@ -25,10 +30,20 @@ module.exports.showListing = async (req, res) => {
 };
 
 module.exports.createListing = async (req, res, next) => {
+    let response = await geocodingClient.forwardGeocode({
+        query: req.body.listing.location,
+        limit: 1
+    })
+     .send();
+     console.log("Geocoding API response:", response.body);
+
     let url = req.file.path;
     let filename = req.file.filename;
     const newListing = new Listing(req.body.listing);
     newListing.image = { url, filename };
+    newListing.geometry = response.body.features[0].geometry;
+    let savedListing = await newListing.save();
+    console.log(savedListing);
     newListing.owner = req.user._id;
     await newListing.save();
     req.flash("success", "New Listing Created!");
@@ -42,8 +57,8 @@ module.exports.editListing = async (req, res) => {
         req.redirect("/listings");
     }
     let originalImageUrl = listing.image.url;
-     originalImageUrl=originalImageUrl.replace("/upload", "upload/h_300,w_250")
-    res.render("listings/edit.ejs", { listing ,originalImageUrl})
+    originalImageUrl = originalImageUrl.replace("/upload", "upload/h_300,w_250")
+    res.render("listings/edit.ejs", { listing, originalImageUrl })
 }
 
 module.exports.updateListing = async (req, res) => {
