@@ -3,6 +3,7 @@
     #filters{
         display: flex;
         flex-wrap: wrap;
+        align-items: center;
     }
     .filter{
         text-align: center;
@@ -16,6 +17,18 @@
     }
     .filter p{
         font-size: 0.8rem;
+    }
+    .tax-info{
+        display: none;
+    }
+    .tax-toggle {
+        border: 1px solid black;
+        border-radius: 1rem;
+        height: 3.5rem;
+        padding: 1rem;
+        margin-left: 3rem;
+        display: flex;
+        align-items: center;
     }
 </style>
 <div id="filters">
@@ -55,6 +68,23 @@
         <div><i class="fa-solid fa-person-skiing"></i></div>
         <p>Arctic</p>
     </div>
+    <div class="filter">
+        <div><i class="fa-solid fa-kitchen-set"></i></div>
+        <p>Chef's</p>
+    </div>
+    <div class="filter">
+        <div><i class="fa-solid fa-city"></i></div>
+        <p>Top Cities</p>
+    </div>
+    <div class="tax-toggle">
+        <div class="form-check-reverse form-switch">
+            <input class="form-check-input" 
+                   type="checkbox" 
+                   role="switch" 
+                   id="flexSwitchCheckDefault">
+            <label class="form-check-label" for="flexSwitchCheckDefault">Display total After Taxes</label>
+          </div>
+    </div>
 </div>
       
 <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
@@ -71,8 +101,23 @@
                     <b><%=listing.title%></b>
                 </p>
                 &#8377; <%= listing.price.toLocaleString('en-IN') %> /night
+                <i class="tax-info"> &nbsp; &nbsp; +18 %GST</i>
             </div>
         </div>
        <% }%>
     </a>
 </div>
+<script>
+    let taxSwitch = document.getElementById("flexSwitchCheckDefault")
+    taxSwitch.addEventListener("click", ()=>{
+        let taxInfo = document.getElementsByClassName("tax-info");
+        for(info of taxInfo) {
+            if(info.style.display!= "inline"){
+            info.style.display = "inline";
+            }
+            else{
+                info.style.display = "none";
+            }
+        }
+    })
+</script>
