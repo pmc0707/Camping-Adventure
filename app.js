@@ -41,10 +41,12 @@ const store = MongoStore.create({
   mongoUrl: dbUrl,
   crypto:{
     secret: "mysupersceretcode"
-  }
+  },
+  touchAfter: 24*3600
 })
 
 const sessionOptions = {
+  store,
   secret: "mysupersceretcode",
   resave: false,
   saveUninitialized: true,
@@ -54,6 +56,9 @@ const sessionOptions = {
     httpOnly: true,
   },
 };
+store.on("error", ()=>{
+  console.log("ERROR IN MONGO SESSION",err)
+})
 // app.get("/", (req, res) => {
 //   res.send("Hi, I am root");
 // });
