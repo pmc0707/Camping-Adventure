@@ -11,7 +11,7 @@
 - [License](#license)
 
 ## About
-**Wanderlust** is a web application designed to allow users to view, create, edit, and delete camping listings. It serves as a platform for camping enthusiasts to share and discover the best camping spots. The application is built using Node.js, Express, MongoDB, and EJS for templating.
+**CampingAdventure** is a web application designed to allow users to view, create, edit, and delete camping listings. It serves as a platform for camping enthusiasts to share and discover the best camping spots. The application is built using Node.js, Express, MongoDB, and EJS for templating.
 
 ## Features
 - View all camping listings
@@ -44,4 +44,4 @@ Make sure you have the following installed:
 1. **Clone the Repository**:
    ```bash
    git clone https://github.com/pmc0707/Camping-Adventure.git
-   cd wanderlust
+   cd CampingAdventure
