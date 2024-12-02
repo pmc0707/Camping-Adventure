@@ -4,7 +4,7 @@ if(process.env.NODE_ENV != "production") {
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-// const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
+
 
 const path = require("path")
 const methodOverride = require("method-override")
@@ -40,14 +40,14 @@ app.use(express.static(path.join(__dirname, "/public")));
 const store = MongoStore.create({
   mongoUrl: dbUrl,
   crypto:{
-    secret: "mysupersceretcode"
+    secret: process.env.SECRET
   },
   touchAfter: 24*3600
 })
 
 const sessionOptions = {
   store,
-  secret: "mysupersceretcode",
+  secret:  process.env.SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -59,9 +59,7 @@ const sessionOptions = {
 store.on("error", ()=>{
   console.log("ERROR IN MONGO SESSION",err)
 })
-// app.get("/", (req, res) => {
-//   res.send("Hi, I am root");
-// });
+
 
 app.use(session(sessionOptions));
 app.use(flash());
@@ -80,14 +78,6 @@ app.use((req,res,next)=>{
   next();
 });
 
-// app.get("/demouser" , async(req,res)=>{
-//   let fackUser = new User({
-//     email: "ex@ex.mail",
-//     username: "334455"
-//   })
-//   let registerUser=await User.register(fackUser,"hello");
-//   res.send(registerUser);
-// })
 
 app.use("/listings", listingsRouter);
 app.use("/listings/:id/reviews", reviewsRouter )
