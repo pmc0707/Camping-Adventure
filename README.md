@@ -1,4 +1,4 @@
-# Wanderlust - Camping Listings
+# Camping-Adventure
 
 ## Table of Contents
 - [About](#about)
